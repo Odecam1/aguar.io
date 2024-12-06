@@ -44,54 +44,37 @@ const App: FC = () => {
     ? gameState.players[currentPlayerId]
     : null
 
-  const playerRadius = currentPlayer ? currentPlayer.score * 2 + 20 : 20
-
   const calCamPosition = (
     windowDimention: number,
-    currentPlayerDimention: number | undefined,
-    cameraScale: number
+    currentPlayerDimention: number | undefined
   ) =>
     currentPlayerDimention
       ? Math.max(
           0,
           Math.min(
-            (2000 - windowDimention) / cameraScale, // Ajuste la dimension de la fenêtre selon l'échelle
-            (currentPlayerDimention - windowDimention / 2) / cameraScale // Ajuste la position du joueur selon l'échelle
+            2000 - windowDimention,
+            currentPlayerDimention - windowDimention / 2
           )
         )
       : 0
 
-  const cameraScale = Math.min(1, 200 / (80 + playerRadius))
-  const cameraX = calCamPosition(
-    window.innerWidth,
-    currentPlayer?.x,
-    cameraScale
-  )
-  const cameraY = calCamPosition(
-    window.innerHeight,
-    currentPlayer?.y,
-    cameraScale
-  )
-
-  const handleMouseMove = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    cameraScale: number
-  ) => {
+  const cameraX = calCamPosition(window.innerWidth, currentPlayer?.x)
+  const cameraY = calCamPosition(window.innerHeight, currentPlayer?.y)
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect()
-
-    const x = (e.clientX - rect.left) / cameraScale
-    const y = (e.clientY - rect.top) / cameraScale
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
 
     socket.emit("updateTarget", { x, y })
   }
-
   return (
     <div className="relative overflow-hidden w-screen h-screen bg-gray-200">
+      <span className="bg-gray-200/90 ">Score : {currentPlayer?.score}</span>
       <div
-        onMouseMove={(e) => handleMouseMove(e, cameraScale)}
+        onMouseMove={handleMouseMove}
         className="absolute w-[2000px] h-[2000px]"
         style={{
-          transform: `translate(${-cameraX}px, ${-cameraY}px) scale(${cameraScale})`,
+          transform: `translate(${-cameraX}px, ${-cameraY}px)`,
           backgroundImage: `
             linear-gradient(to right, #ccc 1px, transparent 1px),
             linear-gradient(to bottom, #ccc 1px, transparent 1px)
