@@ -59,15 +59,15 @@ class Game {
   }
 
   checkGrainCollisions(player) {
-    const playerRadius = player.score * 2 + 20 // La taille du joueur est fonction de son score (augmenter cette valeur pour un effet plus marqué)
+    const playerRadius = player.score * 2 + 20
     this.grains.forEach((grain, index) => {
       const dx = grain.x - player.x
       const dy = grain.y - player.y
       const distance = Math.sqrt(dx * dx + dy * dy)
 
       if (distance < playerRadius) {
-        player.score += 1 // Incrémente le score du joueur
-        this.grains[index] = this.generateGrain() // Regénère le grain après une collision
+        player.score += 1
+        this.grains[index] = this.generateGrain()
       }
     })
   }
