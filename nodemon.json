@@ -1,0 +1,5 @@
+{
+  "watch": ["/express/**"],
+  "ignore": ["**/test/**", "/src/**", "*.config.js", "**/*.md"],
+  "delay": 2500
+}
