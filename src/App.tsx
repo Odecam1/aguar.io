@@ -95,19 +95,18 @@ const App: FC = () => {
         {Object.entries(gameState.players).map(([id, player]) => {
           const playerRadius = player.score * 2 + 20
           return (
-            <div key={id} className="relative">
-              <div
-                className="absolute"
-                style={{
-                  width: playerRadius * 2,
-                  height: playerRadius * 2,
-                  left: player.x - playerRadius,
-                  top: player.y - playerRadius,
-                  backgroundColor: player.color,
-                  borderRadius: "50%",
-                }}
-              />
-            </div>
+            <div
+              key={id}
+              className="absolute"
+              style={{
+                width: playerRadius * 2,
+                height: playerRadius * 2,
+                left: player.x - playerRadius,
+                top: player.y - playerRadius,
+                backgroundColor: player.color,
+                borderRadius: "50%",
+              }}
+            />
           )
         })}
       </div>
